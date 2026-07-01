@@ -24,28 +24,15 @@ export default function Help() {
             </h2>
 
             <p className="text-zinc-400 mt-4">
-              Rudra Poyam
+              
             </p>
 
             <p className="text-2xl mt-2">
-              📞 6265742422
+              📞 9203576310
             </p>
           </div>
 
-          <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-700">
-            <h2 className="text-2xl font-bold text-yellow-400">
-              Customer Support
-            </h2>
-
-            <p className="text-zinc-400 mt-4">
-              Nirmal Kumar
-            </p>
-
-            <p className="text-2xl mt-2">
-              📞 9343624338
-            </p>
-          </div>
-
+          
           <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-700">
             <h2 className="text-2xl font-bold text-yellow-400">
               Email

@@ -43,22 +43,18 @@ export default function Stays() {
       desc:
         "Beautiful outdoor celebrations.",
     },
+    {
+      title:
+        "Sun Hall",
+      image: "/rooms/lawn.jpg",
+      desc:
+        "Celebrations.",
+    },
+    
     
    
-    {
-      title:
-        "Reception",
-      image: "/stays8.jpg",
-      desc:
-        "Premium event experience.",
-    },
-    {
-      title:
-        "Waiting area",
-      image: "/stays9.jpg",
-      desc:
-        "Comfortable stay for families.",
-    },
+    
+    
    
     
   ];

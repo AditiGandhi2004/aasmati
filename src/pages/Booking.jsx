@@ -16,32 +16,39 @@ export default function Booking() {
   const [rooms, setRooms] = useState([
     {
       name: "Standard Room",
-      price: 2499,
+      price: 1500,
       desc: "Comfortable stay",
       quantity: 0,
     },
     {
       name: "Deluxe Room",
-      price: 4499,
+      price: 2000,
       desc: "Luxury comfort",
       quantity: 0,
     },
     {
       name: "Suite Room",
-      price: 7999,
+      price: 3000,
       desc: "Royal experience",
       quantity: 0,
     },
     {
       name: "Banquet Hall",
-      price: 25000,
+      price: 11000,
       desc:
         "For weddings & events",
       quantity: 0,
     },
     {
+      name: "Sun Hall",
+      price: 3000,
+      desc:
+        "Celebrations",
+      quantity: 0,
+    },
+    {
       name: "Lawn Area",
-      price: 15000,
+      price: 3000,
       desc:
         "Outdoor celebrations",
       quantity: 0,
@@ -96,7 +103,7 @@ export default function Booking() {
   );
 
   const gst = Math.floor(
-    subtotal * 0.18
+    subtotal * 0.05
   );
 
   const total =
@@ -293,7 +300,7 @@ export default function Booking() {
 
             <div className="flex justify-between">
               <span>
-                GST (18%)
+                GST (5%)
               </span>
               <span>
                 ₹{gst}

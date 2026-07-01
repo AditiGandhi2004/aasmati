@@ -28,7 +28,7 @@ export default function Home() {
           className="relative z-10 text-center px-6"
         >
           <h1 className="text-6xl md:text-8xl font-bold text-yellow-400">
-            Hotel Asmati
+            Hotel Aasmati
           </h1>
 
           <p className="mt-6 text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
@@ -86,7 +86,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-8 text-gray-300 text-lg leading-9">
-              Hotel Asmati Corporation provides premium accommodation,
+              Hotel Aasmati Corporation provides premium accommodation,
               banquet halls, restaurant facilities, beautiful lawn areas,
               family rooms, deluxe suites and exceptional hospitality for
               tourists, business travellers and wedding events.
@@ -203,26 +203,20 @@ export default function Home() {
               {
                 name: "Standard Room",
                 image: "/rooms/standard.jpg",
-                price: 2500,
-                guests: "2 Guests",
-                bed: "Queen Bed",
-                size: "250 sq.ft"
+                price: 1500,
+                
               },
               {
                 name: "Deluxe Room",
                 image: "rooms/deluxe.jpg",
-                price: 4000,
-                guests: "3 Guests",
-                bed: "King Bed",
-                size: "350 sq.ft"
+                price: 2000,
+                
               },
               {
                 name: "Luxury Suite",
                 image: "rooms/suite.jpg",
-                price: 6500,
-                guests: "4 Guests",
-                bed: "King Bed",
-                size: "500 sq.ft"
+                price: 3000,
+                
               }
             ].map((room) => (
 
@@ -246,11 +240,7 @@ export default function Home() {
 
                   <div className="mt-5 space-y-2 text-gray-300">
 
-                    <p>👥 {room.guests}</p>
-
-                    <p>🛏 {room.bed}</p>
-
-                    <p>📐 {room.size}</p>
+                   
 
                   </div>
 
@@ -295,114 +285,7 @@ export default function Home() {
 
       </section>
 
-      {/* Live Availability */}
-
-      <section className="bg-zinc-950 py-24">
-
-        <div className="max-w-7xl mx-auto px-6">
-
-          <div className="text-center">
-
-            <h2 className="text-5xl font-bold text-yellow-400">
-
-              Today's Availability
-
-            </h2>
-
-            <p className="mt-5 text-gray-400">
-
-              Live room inventory
-
-            </p>
-
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mt-16">
-
-            {[
-              {
-                room: "Standard",
-                left: 8,
-                total: 20,
-                color: "bg-green-500"
-              },
-              {
-                room: "Deluxe",
-                left: 5,
-                total: 15,
-                color: "bg-yellow-500"
-              },
-              {
-                room: "Suite",
-                left: 2,
-                total: 8,
-                color: "bg-red-500"
-              },
-              {
-                room: "Banquet",
-                left: "Open",
-                total: "",
-                color: "bg-blue-500"
-              },
-              {
-                room: "Lawn",
-                left: "Open",
-                total: "",
-                color: "bg-emerald-500"
-              }
-            ].map((item) => (
-
-              <motion.div
-                key={item.room}
-                whileHover={{ scale: 1.05 }}
-                className="bg-black rounded-3xl border border-yellow-500/20 p-8 text-center"
-              >
-
-                <h3 className="text-2xl font-bold text-yellow-400">
-
-                  {item.room}
-
-                </h3>
-
-                <div
-                  className={`mt-6 ${item.color} w-24 h-24 rounded-full flex items-center justify-center mx-auto`}
-                >
-
-                  <span className="text-white text-2xl font-bold">
-
-                    {item.left}
-
-                  </span>
-
-                </div>
-
-                {item.total !== "" ? (
-
-                  <p className="mt-6 text-gray-300">
-
-                    {item.left} Rooms Left
-
-                  </p>
-
-                ) : (
-
-                  <p className="mt-6 text-gray-300">
-
-                    Available
-
-                  </p>
-
-                )}
-
-              </motion.div>
-
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
+      
             {/* Luxury Amenities */}
 
       <section className="py-24 bg-black">
@@ -680,7 +563,7 @@ export default function Home() {
               onClick={() => navigate("/booking")}
               className="mt-8 bg-yellow-500 text-black px-8 py-4 rounded-xl font-bold hover:bg-yellow-400 transition"
             >
-              Reserve Table
+              Opening soon
             </button>
 
           </motion.div>

@@ -77,7 +77,7 @@ export default function Navbar() {
 
           <div>
             <h1 className="text-white font-bold text-2xl xl:text-3xl leading-none">
-              Hotel Asmati
+              Hotel Aasmati
             </h1>
 
             <p className="text-yellow-400 text-[11px] tracking-[5px]">

@@ -15,7 +15,7 @@ export default function Footer() {
           {/* Hotel Info */}
           <div>
             <h2 className="text-3xl font-bold text-yellow-400">
-              Hotel Asmati
+              Hotel Aasmati
             </h2>
 
             <p className="text-zinc-400 mt-4 leading-7">
@@ -41,28 +41,14 @@ export default function Footer() {
                   size={20}
                 />
 
-                <div>
-                  <p className="font-semibold">
-                    Rudra Poyam
-                  </p>
-                  <p className="text-zinc-400">
-                    6265742422
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <Phone
-                  className="text-yellow-400 mt-1"
-                  size={20}
-                />
+                
 
                 <div>
                   <p className="font-semibold">
-                    Nirmal Kumar
+                    Hotel Aasmati
                   </p>
                   <p className="text-zinc-400">
-                    9343624338
+                    9203576310
                   </p>
                 </div>
               </div>

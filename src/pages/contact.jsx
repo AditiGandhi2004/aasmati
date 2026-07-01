@@ -23,7 +23,7 @@ export default function Contact() {
           <div className="bg-zinc-900 rounded-3xl p-8">
 
             <h2 className="text-3xl font-bold mb-8">
-              Hotel Asmati Corporation
+              Hotel Aasmati Corporation
             </h2>
 
             <div className="space-y-8">
@@ -37,15 +37,10 @@ export default function Contact() {
                     Booking Contact
                   </h3>
 
-                  <p>Rudra Poyam</p>
+                  
+                  <p>Hotel Aasmati</p>
 
-                  <p>6265742422</p>
-
-                  <br />
-
-                  <p>Nirmal Kumar</p>
-
-                  <p>9343624338</p>
+                  <p>9203576310</p>
 
                 </div>
 
