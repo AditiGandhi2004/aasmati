@@ -138,9 +138,9 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await fetch(
-      "https://hotel-asmati-backend.onrender.com",
-      {
+    const response = await 
+        fetch(
+  `${import.meta.env.VITE_API_URL}/api/bookings`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
