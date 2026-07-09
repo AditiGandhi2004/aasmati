@@ -139,7 +139,7 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetch(
-      "http://localhost:5000/api/bookings",
+      "https://hotel-asmati-backend.onrender.com",
       {
         method: "POST",
         headers: {
