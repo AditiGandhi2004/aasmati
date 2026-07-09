@@ -131,7 +131,7 @@ export default function Home() {
                 icon: "🛏️"
               },
               {
-                title: "Restaurant",
+                title: "Restaurant(Opening soon)",
                 icon: "🍽️"
               },
               {
@@ -320,7 +320,7 @@ export default function Home() {
               {
                 icon: "🍽️",
                 title: "Restaurant",
-                desc: "Multi-cuisine restaurant with delicious food."
+                desc: "Opening soon. Multi-cuisine restaurant with delicious food."
               },
               {
                 icon: "🚗",
@@ -330,7 +330,7 @@ export default function Home() {
               {
                 icon: "🛎️",
                 title: "24×7 Reception",
-                desc: "Friendly staff available all day."
+                desc: "Opening soon.Friendly staff available all day."
               },
               {
                 icon: "🎉",

@@ -11,7 +11,16 @@ export default function Booking() {
     useState(null);
 
   const [checkOut, setCheckOut] =
-    useState(null);
+  useState(null);
+
+const [customerName, setCustomerName] =
+  useState("");
+
+const [email, setEmail] =
+  useState("");
+
+const [phone, setPhone] =
+  useState("");
 
   const [rooms, setRooms] = useState([
     {
@@ -108,48 +117,77 @@ export default function Booking() {
 
   const total =
     subtotal + gst;
+const handleSubmit = async () => {
+  const selectedRooms = rooms.filter(
+    (room) => room.quantity > 0
+  );
 
-  const handleSubmit = () => {
-    const selectedRooms =
-      rooms.filter(
-        (room) =>
-          room.quantity > 0
-      );
+  if (selectedRooms.length === 0) {
+    alert("Please select at least one room");
+    return;
+  }
 
-    if (
-      selectedRooms.length === 0
-    ) {
-      alert(
-        "Please select at least one room"
-      );
-      return;
+  if (!customerName || !email || !phone) {
+    alert("Please fill all customer details");
+    return;
+  }
+
+  if (!checkIn || !checkOut) {
+    alert("Please select dates");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/bookings",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerName,
+          email,
+          phone,
+
+          rooms: selectedRooms.map((room) => ({
+            roomName: room.name,
+            quantity: room.quantity,
+            price: room.price,
+          })),
+
+          checkIn,
+          checkOut,
+
+          totalAmount: total,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      navigate("/summary", {
+        state: {
+          booking: data.booking,
+          rooms: selectedRooms,
+          checkIn: checkIn.toDateString(),
+          checkOut: checkOut.toDateString(),
+          days,
+          subtotal,
+          gst,
+          total,
+        },
+      });
+    } else {
+      alert("Booking Failed");
     }
-
-    if (
-      !checkIn ||
-      !checkOut
-    ) {
-      alert(
-        "Please select dates"
-      );
-      return;
-    }
-
-    navigate("/summary", {
-      state: {
-        rooms:
-          selectedRooms,
-        checkIn:
-          checkIn.toDateString(),
-        checkOut:
-          checkOut.toDateString(),
-        days,
-        subtotal,
-        gst,
-        total,
-      },
-    });
-  };
+  } catch (error) {
+    console.log(error);
+    alert("Server Error");
+  }
+};
+  
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -229,6 +267,67 @@ export default function Booking() {
             )
           )}
         </div>
+        {/* Customer Details */}
+
+<div className="bg-zinc-900 rounded-3xl p-8 mt-12 border border-zinc-700">
+
+  <h2 className="text-3xl text-center font-bold text-yellow-400 mb-8">
+    Customer Information
+  </h2>
+
+  <div className="grid md:grid-cols-3 gap-6">
+
+    <div>
+      <label className="block mb-2 text-yellow-400">
+        Full Name
+      </label>
+
+      <input
+        type="text"
+        value={customerName}
+        onChange={(e) =>
+          setCustomerName(e.target.value)
+        }
+        placeholder="Enter Full Name"
+        className="w-full p-4 rounded-xl bg-black border border-yellow-500 outline-none"
+      />
+    </div>
+
+    <div>
+      <label className="block mb-2 text-yellow-400">
+        Email
+      </label>
+
+      <input
+        type="email"
+        value={email}
+        onChange={(e) =>
+          setEmail(e.target.value)
+        }
+        placeholder="Enter Email"
+        className="w-full p-4 rounded-xl bg-black border border-yellow-500 outline-none"
+      />
+    </div>
+
+    <div>
+      <label className="block mb-2 text-yellow-400">
+        Phone Number
+      </label>
+
+      <input
+        type="text"
+        value={phone}
+        onChange={(e) =>
+          setPhone(e.target.value)
+        }
+        placeholder="Enter Phone Number"
+        className="w-full p-4 rounded-xl bg-black border border-yellow-500 outline-none"
+      />
+    </div>
+
+  </div>
+
+</div>
 
         {/* Dates */}
         <div className="bg-zinc-900 rounded-3xl p-8 mt-16 border border-zinc-700">
