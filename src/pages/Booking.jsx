@@ -139,8 +139,8 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetch(
-      "https://hotel-asmati-backend.onrender.com",
-      {
+  `${import.meta.env.VITE_API_URL}/api/bookings`,
+  {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -167,18 +167,21 @@ const handleSubmit = async () => {
     const data = await response.json();
 
     if (data.success) {
-      navigate("/summary", {
-        state: {
-          booking: data.booking,
-          rooms: selectedRooms,
-          checkIn: checkIn.toDateString(),
-          checkOut: checkOut.toDateString(),
-          days,
-          subtotal,
-          gst,
-          total,
-        },
-      });
+      navigate("/payment", {
+  state: {
+    customerName,
+    email,
+    phone,
+    rooms: selectedRooms,
+    checkIn,
+    checkOut,
+    days,
+    subtotal,
+    gst,
+    total,
+  },
+});
+      
     } else {
       alert("Booking Failed");
     }

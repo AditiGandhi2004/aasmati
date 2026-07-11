@@ -1,201 +1,439 @@
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import {
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { useState } from "react";
 
 export default function Payment() {
-  const location =
-    useLocation();
+  const location = useLocation();
 
-  const navigate =
-    useNavigate();
+  const booking = location.state || {};
 
-  const booking =
-    location.state;
+  const [paymentMethod, setPaymentMethod] = useState("upi");
+  const [transactionId, setTransactionId] = useState("");
+  const [paymentScreenshot, setPaymentScreenshot] = useState(null);
 
-  const [selectedMethod,
-    setSelectedMethod,
-  ] = useState("");
+  const totalAmount = booking.total || 0;
 
-  if (!booking) {
-    return (
-      <div className="min-h-screen bg-black text-white flex justify-center items-center">
-        No Booking Found
-      </div>
-    );
+  const copyUPI = () => {
+    navigator.clipboard.writeText("9425258240@axisbank");
+    alert("UPI ID Copied Successfully");
+  };
+
+  const copyBankDetails = () => {
+    const details = `
+Account Holder : MOHAN LAL MARKAM
+Bank : Axis Bank Ltd.
+Account Number : 924030069204
+IFSC : UTIB0003342
+Branch : Kondagaon
+`;
+
+    navigator.clipboard.writeText(details);
+    alert("Bank Details Copied Successfully");
+  };
+
+ const handleSubmit = async () => {
+  if (!transactionId.trim()) {
+    alert("Please enter Transaction ID");
+    return;
   }
 
-  const paymentMethods = [
-    "PhonePe",
-    "Google Pay",
-    "Credit / Debit Card",
-    "UPI",
-    "Net Banking",
-  ];
+  const formData = new FormData();
 
-  const handlePayment =
-    () => {
-      if (
-        !selectedMethod
-      ) {
-        alert(
-          "Please select payment method"
-        );
-        return;
+  formData.append("bookingId", booking.booking?._id || "");
+
+  formData.append("customerName", booking.customerName);
+
+  formData.append("email", booking.email);
+
+  formData.append("phone", booking.phone);
+
+  formData.append("amount", booking.total);
+
+  formData.append("transactionId", transactionId);
+
+  formData.append("paymentMethod", paymentMethod);
+
+  if (paymentScreenshot) {
+    formData.append("screenshot", paymentScreenshot);
+  }
+
+  try {
+    const response = await fetch(
+      "https://hotel-asmati-backend.onrender.com/api/payments",
+      {
+        method: "POST",
+        body: formData,
       }
+    );
 
-      navigate(
-        "/success",
-        {
-          state: {
-            booking,
-            paymentMethod:
-              selectedMethod,
-            bookingId:
-              "ASM" +
-              Math.floor(
-                Math.random() *
-                  100000
-              ),
-          },
-        }
+    const data = await response.json();
+
+    if (data.success) {
+      alert(
+        "Payment submitted successfully!\n\nOur team will verify your payment shortly."
       );
-    };
+
+      console.log(data);
+    } else {
+      alert(data.message);
+    }
+  } catch (error) {
+    console.log(error);
+
+    alert("Server Error");
+  }
+};
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white">
+    <div className="min-h-screen bg-black text-white">
 
-      <Navbar />
+  <Navbar />
 
-      <div className="max-w-6xl mx-auto px-5 pt-32 pb-20">
+  <div className="max-w-5xl mx-auto pt-32 pb-20 px-6">
 
-        {/* Back */}
-        <button
-          onClick={() =>
-            navigate(-1)
-          }
-          className="text-yellow-400 mb-8"
-        >
-          ← Back
-        </button>
+    <h1 className="text-5xl font-bold text-center text-yellow-400">
+      Complete Your Payment
+    </h1>
 
-        <div className="text-center mb-12">
+    <p className="text-center text-zinc-400 mt-3">
+      Secure your booking by completing the payment.
+    </p>
 
-          <h1 className="text-5xl font-bold text-yellow-400">
-            Payment
-          </h1>
+    <div className="bg-zinc-900 rounded-3xl p-10 mt-10 border border-yellow-500">
 
-          <p className="text-zinc-400 mt-3">
-            Complete your luxury
-            booking
-          </p>
-        </div>
+      {/* Amount */}
 
-        <div className="grid lg:grid-cols-2 gap-10">
+      <div className="text-center">
 
-          {/* Left */}
-          <div className="bg-zinc-900 rounded-[35px] p-8 border border-zinc-700">
+        <h2 className="text-xl text-zinc-400">
+          Amount Payable
+        </h2>
 
-            <h2 className="text-3xl font-bold text-yellow-400 mb-8">
-              Select Payment
-            </h2>
+        <h1 className="text-6xl font-bold text-yellow-400 mt-3">
+          ₹{totalAmount}
+        </h1>
 
-            <div className="space-y-4">
+      </div>
 
-              {paymentMethods.map(
-                (method) => (
-                  <div
-                    key={
-                      method
-                    }
-                    onClick={() =>
-                      setSelectedMethod(
-                        method
-                      )
-                    }
-                    className={`cursor-pointer p-5 rounded-2xl border transition
+      {/* Booking Summary */}
 
-                    ${
-                      selectedMethod ===
-                      method
-                        ? "border-yellow-500 bg-yellow-500/10"
-                        : "border-zinc-700"
-                    }`}
-                  >
-                    <h3 className="text-xl font-semibold">
-                      {method}
-                    </h3>
-                  </div>
-                )
-              )}
-            </div>
+      <div className="mt-10 bg-black rounded-2xl border border-yellow-500 p-6">
+
+        <h2 className="text-2xl font-bold text-yellow-400 mb-6">
+          Booking Summary
+        </h2>
+
+        <div className="space-y-4">
+
+          <div className="flex justify-between">
+            <span>Guest Name</span>
+            <span>{booking.customerName}</span>
           </div>
 
-          {/* Right */}
-          <div className="bg-zinc-900 rounded-[35px] p-8 border border-zinc-700">
+          <div className="flex justify-between">
+            <span>Email</span>
+            <span>{booking.email}</span>
+          </div>
 
-            <h2 className="text-3xl font-bold text-yellow-400 mb-8">
-              Booking Total
+          <div className="flex justify-between">
+            <span>Phone</span>
+            <span>{booking.phone}</span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Check-In</span>
+            <span>
+              {booking.checkIn
+                ? new Date(booking.checkIn).toDateString()
+                : "-"}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Check-Out</span>
+            <span>
+              {booking.checkOut
+                ? new Date(booking.checkOut).toDateString()
+                : "-"}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Total Nights</span>
+            <span>{booking.days}</span>
+          </div>
+
+          <div className="border-t border-zinc-700 pt-4 flex justify-between text-xl font-bold text-yellow-400">
+
+            <span>Total Amount</span>
+
+            <span>₹{booking.total}</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Payment Method */}
+
+      <div className="mt-12">
+
+        <h2 className="text-3xl font-bold text-yellow-400 mb-8">
+
+          Choose Payment Method
+
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {/* UPI */}
+
+          <div
+            onClick={() => setPaymentMethod("upi")}
+            className={`cursor-pointer rounded-2xl p-6 transition border ${
+              paymentMethod === "upi"
+                ? "border-yellow-500 bg-yellow-500/10"
+                : "border-zinc-700 bg-black"
+            }`}
+          >
+
+            <h2 className="text-2xl font-bold">
+              📱 UPI Payment
             </h2>
 
-            <div className="space-y-4">
+            <p className="text-zinc-400 mt-4">
+              Scan QR Code using Google Pay,
+              PhonePe, Paytm or any UPI App.
+            </p>
+
+          </div>
+
+          {/* Bank */}
+
+          <div
+            onClick={() => setPaymentMethod("bank")}
+            className={`cursor-pointer rounded-2xl p-6 transition border ${
+              paymentMethod === "bank"
+                ? "border-yellow-500 bg-yellow-500/10"
+                : "border-zinc-700 bg-black"
+            }`}
+          >
+
+            <h2 className="text-2xl font-bold">
+              🏦 Bank Transfer
+            </h2>
+
+            <p className="text-zinc-400 mt-4">
+              Direct bank account transfer.
+            </p>
+
+          </div>
+
+          {/* Card */}
+
+          <div className="rounded-2xl border border-zinc-700 bg-black p-6">
+
+            <h2 className="text-2xl font-bold">
+              💳 Debit / Credit Card
+            </h2>
+
+            <p className="text-zinc-400 mt-4">
+              Please contact reception to complete
+              your payment.
+            </p>
+
+            <a
+              href="tel:+919425258240"
+              className="inline-block mt-6 bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold"
+            >
+              📞 Call Reception
+            </a>
+
+          </div>
+
+          {/* Net Banking */}
+
+          <div className="rounded-2xl border border-zinc-700 bg-black p-6">
+
+            <h2 className="text-2xl font-bold">
+              🌐 Net Banking
+            </h2>
+
+            <p className="text-zinc-400 mt-4">
+              Please contact reception to complete
+              your payment.
+            </p>
+
+            <a
+              href="tel:+919425258240"
+              className="inline-block mt-6 bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold"
+            >
+              📞 Call Reception
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+            {/* UPI Section */}
+
+      {paymentMethod === "upi" && (
+
+        <div className="mt-12">
+
+          <div className="bg-black rounded-3xl border border-yellow-500 p-8 text-center">
+
+            <h2 className="text-3xl font-bold text-yellow-400 mb-8">
+              Scan & Pay
+            </h2>
+
+            <img
+              src="/qr-code.png"
+              alt="QR Code"
+              className="w-72 h-72 mx-auto bg-white p-3 rounded-2xl"
+            />
+
+            <p className="mt-6 text-zinc-400">
+              Scan this QR Code using Google Pay,
+              PhonePe, Paytm or any UPI App
+            </p>
+
+            <div className="mt-8">
+
+              <p className="text-zinc-400">
+                UPI ID
+              </p>
+
+              <div className="flex justify-center items-center gap-4 mt-4">
+
+                <h2 className="text-2xl font-bold text-yellow-400">
+                  9425258240@axisbank
+                </h2>
+
+                <button
+                  onClick={copyUPI}
+                  className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400"
+                >
+                  Copy
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* Bank Transfer */}
+
+      {paymentMethod === "bank" && (
+
+        <div className="mt-12">
+
+          <div className="bg-black rounded-3xl border border-yellow-500 p-8">
+
+            <h2 className="text-3xl font-bold text-yellow-400 mb-8">
+              Bank Transfer Details
+            </h2>
+
+            <div className="space-y-5">
 
               <div className="flex justify-between">
-                <span>
-                  Subtotal
-                </span>
-
-                <span>
-                  ₹
-                  {
-                    booking.subtotal
-                  }
-                </span>
+                <span>Account Holder</span>
+                <span>MOHAN LAL MARKAM</span>
               </div>
 
               <div className="flex justify-between">
-                <span>
-                  GST
-                </span>
-
-                <span>
-                  ₹
-                  {
-                    booking.gst
-                  }
-                </span>
+                <span>Bank</span>
+                <span>Axis Bank Ltd.</span>
               </div>
 
-              <div className="border-t border-zinc-700 pt-5 flex justify-between text-2xl font-bold text-yellow-400">
-                <span>
-                  Total
-                </span>
-
-                <span>
-                  ₹
-                  {
-                    booking.total
-                  }
-                </span>
+              <div className="flex justify-between">
+                <span>Account Number</span>
+                <span>XXXXXXXX9204</span>
               </div>
+
+              <div className="flex justify-between">
+                <span>IFSC</span>
+                <span>UTIB0003342</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Branch</span>
+                <span>Kondagaon</span>
+              </div>
+
             </div>
 
             <button
-              onClick={
-                handlePayment
-              }
-              className="w-full mt-10 bg-yellow-500 text-black py-4 rounded-2xl font-bold text-lg hover:scale-105 transition"
+              onClick={copyBankDetails}
+              className="mt-8 w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400"
             >
-              Pay Now
+              Copy Bank Details
             </button>
+
           </div>
+
         </div>
+
+      )}
+
+      {/* Transaction */}
+
+      <div className="mt-12">
+
+        <label className="block text-lg text-yellow-400 mb-3">
+          Transaction ID
+        </label>
+
+        <input
+          type="text"
+          value={transactionId}
+          onChange={(e) => setTransactionId(e.target.value)}
+          placeholder="Enter UPI / Bank Transaction ID"
+          className="w-full p-4 rounded-xl bg-black border border-yellow-500 outline-none"
+        />
+
       </div>
 
-      <Footer />
+      {/* Screenshot */}
+
+      <div className="mt-8">
+
+        <label className="block text-lg text-yellow-400 mb-3">
+          Upload Payment Screenshot
+        </label>
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setPaymentScreenshot(e.target.files[0])}
+          className="w-full bg-black border border-yellow-500 rounded-xl p-4"
+        />
+
+      </div>
+
+      {/* Submit */}
+
+      <button
+        onClick={handleSubmit}
+        className="w-full mt-12 bg-yellow-500 hover:bg-yellow-400 text-black py-4 rounded-xl text-xl font-bold transition"
+      >
+        Submit Payment
+      </button>
+
     </div>
-  );
+
+  </div>
+
+  <Footer />
+
+</div>
+  )
 }
