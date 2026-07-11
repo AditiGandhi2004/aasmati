@@ -117,7 +117,9 @@ const [phone, setPhone] =
 
   const total =
     subtotal + gst;
-const handleSubmit = async () => {
+
+
+          const handleSubmit = async () => {
   const selectedRooms = rooms.filter(
     (room) => room.quantity > 0
   );
@@ -139,8 +141,13 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetch(
+<<<<<<< HEAD
   `${import.meta.env.VITE_API_URL}/api/bookings`,
   {
+=======
+      `${import.meta.env.VITE_API_URL}/api/bookings`,
+      {
+>>>>>>> b6e8ca50b5451a94ebd411c16001921bd638238e
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +165,6 @@ const handleSubmit = async () => {
 
           checkIn,
           checkOut,
-
           totalAmount: total,
         }),
       }
@@ -186,11 +192,11 @@ const handleSubmit = async () => {
       alert("Booking Failed");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     alert("Server Error");
   }
 };
-  
+    
 
   return (
     <div className="min-h-screen bg-black text-white">
