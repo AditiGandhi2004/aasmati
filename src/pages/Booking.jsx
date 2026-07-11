@@ -141,13 +141,10 @@ const [phone, setPhone] =
 
   try {
     const response = await fetch(
-<<<<<<< HEAD
-  `${import.meta.env.VITE_API_URL}/api/bookings`,
-  {
-=======
-      `${import.meta.env.VITE_API_URL}/api/bookings`,
+
+`${import.meta.env.VITE_API_URL}/api/bookings`,
       {
->>>>>>> b6e8ca50b5451a94ebd411c16001921bd638238e
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
