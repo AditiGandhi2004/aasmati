@@ -24,7 +24,26 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+// =======================
+// Get All Payments
+// =======================
 
+router.get("/", async (req, res) => {
+  try {
+    const payments = await Payment.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(payments);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
 // =======================
 // Save Payment
 // =======================
