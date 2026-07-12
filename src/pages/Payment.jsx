@@ -65,17 +65,17 @@ formData.append("phone", booking.booking?.phone || "");
       }
     );
 
-    const data = await response.json();
+    const text = await response.text();
+console.log("Server Response:", text);
 
-    if (data.success) {
-      alert(
-        "Payment submitted successfully!\n\nOur team will verify your payment shortly."
-      );
+if (!response.ok) {
+  alert("Backend Error:\n" + text);
+  return;
+}
 
-      console.log(data);
-    } else {
-      alert(data.message);
-    }
+const data = JSON.parse(text);
+
+alert("Payment submitted successfully!");
   } catch (error) {
     console.log(error);
 

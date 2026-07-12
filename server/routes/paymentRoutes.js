@@ -60,7 +60,7 @@ router.get("/", async (req, res) => {
 // Save Payment
 // =======================
 
-router.post("/", upload.single("screenshot"), async (req, res) => {
+router.post("/", (req, res, next) => next(), async (req, res) => {
   try {
     console.log("======= PAYMENT REQUEST =======");
     console.log(req.body);
@@ -79,8 +79,8 @@ router.post("/", upload.single("screenshot"), async (req, res) => {
       transactionId: req.body.transactionId,
 
       paymentMethod: req.body.paymentMethod,
-
-      screenshot: req.file ? req.file.filename : "",
+screenshot: "",
+      
 
       status: "Pending Verification",
     });
