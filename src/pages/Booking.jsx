@@ -166,26 +166,30 @@ const [phone, setPhone] =
         }),
       }
     );
+const data = await response.json();
 
-    const data = await response.json();
+if (data.success) {
+  navigate("/payment", {
+    state: {
+      booking: data.booking,   // <-- this is the MongoDB booking document
 
-    if (data.success) {
-      navigate("/payment", {
-  state: {
-    customerName,
-    email,
-    phone,
-    rooms: selectedRooms,
-    checkIn,
-    checkOut,
-    days,
-    subtotal,
-    gst,
-    total,
-  },
-});
-      
-    } else {
+      customerName,
+      email,
+      phone,
+
+      rooms: selectedRooms,
+
+      checkIn,
+      checkOut,
+
+      days,
+      subtotal,
+      gst,
+      total,
+    },
+  });
+}
+    else {
       alert("Booking Failed");
     }
   } catch (error) {

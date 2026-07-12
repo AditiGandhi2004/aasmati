@@ -39,13 +39,13 @@ Branch : Kondagaon
   }
 
   const body = {
-  bookingId: booking.booking?._id || "",
+  bookingId: booking.booking?._id,
 
-  customerName: booking.booking?.customerName || "",
+  customerName: booking.customerName,
 
-  email: booking.booking?.email || "",
+  email: booking.email,
 
-  phone: booking.booking?.phone || "",
+  phone: booking.phone,
 
   amount: booking.total,
 
@@ -127,17 +127,17 @@ alert("Payment submitted successfully!");
 
   <div className="flex justify-between">
     <span>Guest Name</span>
-    <span>{booking.booking?.customerName}</span>
+    <span>{booking.customerName}</span>
   </div>
 
   <div className="flex justify-between">
     <span>Email</span>
-    <span>{booking.booking?.email}</span>
+    <span>{booking.email}</span>
   </div>
 
   <div className="flex justify-between">
     <span>Phone</span>
-    <span>{booking.booking?.phone}</span>
+    <span>{booking.phone}</span>
   </div>
 
           <div className="flex justify-between">
