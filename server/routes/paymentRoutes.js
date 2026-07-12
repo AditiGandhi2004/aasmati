@@ -1,8 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const Payment = require("../models/Payment");
+
+// =======================
+// Create uploads folder if it doesn't exist
+// =======================
+
+const uploadDir = path.join(__dirname, "../uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // =======================
 // Multer Storage
@@ -10,20 +22,18 @@ const Payment = require("../models/Payment");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, uploadDir);
   },
 
   filename: function (req, file, cb) {
-    cb(
-      null,
-      Date.now() + "-" + file.originalname
-    );
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
 const upload = multer({
   storage,
 });
+
 // =======================
 // Get All Payments
 // =======================
@@ -34,65 +44,63 @@ router.get("/", async (req, res) => {
       createdAt: -1,
     });
 
-    res.status(200).json(payments);
+    res.json(payments);
   } catch (error) {
-    console.log(error);
+    console.error("GET PAYMENT ERROR");
+    console.error(error);
 
     res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: error.message,
     });
   }
 });
+
 // =======================
 // Save Payment
 // =======================
 
-router.post(
-  "/",
-  upload.single("screenshot"),
+router.post("/", upload.single("screenshot"), async (req, res) => {
+  try {
+    console.log("======= PAYMENT REQUEST =======");
+    console.log(req.body);
 
-  async (req, res) => {
-    try {
-      const payment = new Payment({
-        bookingId: req.body.bookingId,
+    const payment = new Payment({
+      bookingId: req.body.bookingId || null,
 
-        customerName: req.body.customerName,
+      customerName: req.body.customerName,
 
-        email: req.body.email,
+      email: req.body.email,
 
-        phone: req.body.phone,
+      phone: req.body.phone,
 
-        amount: req.body.amount,
+      amount: req.body.amount,
 
-        transactionId: req.body.transactionId,
+      transactionId: req.body.transactionId,
 
-        paymentMethod: req.body.paymentMethod,
+      paymentMethod: req.body.paymentMethod,
 
-        screenshot: req.file
-          ? req.file.filename
-          : "",
+      screenshot: req.file ? req.file.filename : "",
 
-        status: "Pending Verification",
-      });
+      status: "Pending Verification",
+    });
 
-      await payment.save();
+    await payment.save();
 
-      res.status(201).json({
-        success: true,
-        message:
-          "Payment submitted successfully. Waiting for verification.",
-        payment,
-      });
-    } catch (error) {
-      console.log(error);
+    res.status(201).json({
+      success: true,
+      payment,
+    });
+  } catch (error) {
+    console.error("======= PAYMENT ERROR =======");
+    console.error(error);
+    console.error(error.stack);
 
-      res.status(500).json({
-        success: false,
-        message: "Server Error",
-      });
-    }
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-);
+});
 
 module.exports = router;

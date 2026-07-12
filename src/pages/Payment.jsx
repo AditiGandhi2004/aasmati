@@ -42,11 +42,9 @@ Branch : Kondagaon
 
   formData.append("bookingId", booking.booking?._id || "");
 
-  formData.append("customerName", booking.customerName);
-
-  formData.append("email", booking.email);
-
-  formData.append("phone", booking.phone);
+  formData.append("customerName", booking.booking?.customerName || "");
+formData.append("email", booking.booking?.email || "");
+formData.append("phone", booking.booking?.phone || "");
 
   formData.append("amount", booking.total);
 
@@ -124,22 +122,22 @@ Branch : Kondagaon
           Booking Summary
         </h2>
 
-        <div className="space-y-4">
+     <div className="space-y-4">
 
-          <div className="flex justify-between">
-            <span>Guest Name</span>
-            <span>{booking.customerName}</span>
-          </div>
+  <div className="flex justify-between">
+    <span>Guest Name</span>
+    <span>{booking.booking?.customerName}</span>
+  </div>
 
-          <div className="flex justify-between">
-            <span>Email</span>
-            <span>{booking.email}</span>
-          </div>
+  <div className="flex justify-between">
+    <span>Email</span>
+    <span>{booking.booking?.email}</span>
+  </div>
 
-          <div className="flex justify-between">
-            <span>Phone</span>
-            <span>{booking.phone}</span>
-          </div>
+  <div className="flex justify-between">
+    <span>Phone</span>
+    <span>{booking.booking?.phone}</span>
+  </div>
 
           <div className="flex justify-between">
             <span>Check-In</span>

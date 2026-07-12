@@ -57,7 +57,7 @@ const [phone, setPhone] =
     },
     {
       name: "Lawn Area",
-      price: 3000,
+      price: 11000,
       desc:
         "Outdoor celebrations",
       quantity: 0,
