@@ -38,30 +38,31 @@ Branch : Kondagaon
     return;
   }
 
-  const formData = new FormData();
+  const body = {
+  bookingId: booking.booking?._id || "",
 
-  formData.append("bookingId", booking.booking?._id || "");
+  customerName: booking.booking?.customerName || "",
 
-  formData.append("customerName", booking.booking?.customerName || "");
-formData.append("email", booking.booking?.email || "");
-formData.append("phone", booking.booking?.phone || "");
+  email: booking.booking?.email || "",
 
-  formData.append("amount", booking.total);
+  phone: booking.booking?.phone || "",
 
-  formData.append("transactionId", transactionId);
+  amount: booking.total,
 
-  formData.append("paymentMethod", paymentMethod);
+  transactionId,
 
-  if (paymentScreenshot) {
-    formData.append("screenshot", paymentScreenshot);
-  }
-
+  paymentMethod,
+};
   try {
     const response = await fetch(
       "https://hotel-asmati-backend.onrender.com/api/payments",
       {
         method: "POST",
-        body: formData,
+        headers: {
+  "Content-Type": "application/json",
+},
+
+body: JSON.stringify(body),
       }
     );
 
@@ -402,20 +403,7 @@ alert("Payment submitted successfully!");
 
       {/* Screenshot */}
 
-      <div className="mt-8">
-
-        <label className="block text-lg text-yellow-400 mb-3">
-          Upload Payment Screenshot
-        </label>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setPaymentScreenshot(e.target.files[0])}
-          className="w-full bg-black border border-yellow-500 rounded-xl p-4"
-        />
-
-      </div>
+      
 
       {/* Submit */}
 

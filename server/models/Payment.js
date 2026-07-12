@@ -17,7 +17,7 @@ const paymentSchema = new mongoose.Schema(
 
     transactionId: String,
 
-    screenshot: String,
+    
 
     paymentMethod: String,
 
