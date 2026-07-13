@@ -19,5 +19,5 @@ app.get("/", (req, res) => {
 // Booking API Route
 app.use("/api/bookings", require("./routes/bookingRoutes"));
 app.use("/api/payments", require("./routes/paymentRoutes"));
-
+app.use("/api/admin", require("./routes/adminRoutes"));
 module.exports = app;
