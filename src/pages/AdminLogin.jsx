@@ -64,7 +64,7 @@ export default function AdminLogin() {
         </h1>
 
         <input
-          type="test"
+          type="text"
           placeholder="Username"
           value={username}
           onChange={(e) =>setUsername(e.target.value)}
