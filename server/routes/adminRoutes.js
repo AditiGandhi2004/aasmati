@@ -8,10 +8,10 @@ const router = express.Router();
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Find admin by email
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ username });
 
     if (!admin) {
       return res.status(401).json({

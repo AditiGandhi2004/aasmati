@@ -11,9 +11,8 @@ const createAdmin = async () => {
     await connectDB();
 
     const existing = await Admin.findOne({
-      email: "admin@asmati.com",
-    });
-
+  username: "admin",
+});
     if (existing) {
       console.log("Admin already exists");
       process.exit();
