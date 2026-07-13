@@ -11,7 +11,10 @@ import Stays from "./pages/Stays";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import SignIn from "./pages/SignIn";
-
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminPayments from "./pages/AdminPayments";
+import AdminBookings from "./pages/AdminBookings";
 function App() {
   return (
     <BrowserRouter>
@@ -21,7 +24,14 @@ function App() {
           path="/"
           element={<Home />}
         />
-
+<Route
+  path="/admin/payments"
+  element={<AdminPayments />}
+/>
+<Route
+  path="/admin/bookings"
+  element={<AdminBookings />}
+/>
         <Route
           path="/register"
           element={<Register />}
@@ -58,15 +68,17 @@ function App() {
   path="/stays"
   element={<Stays />}
 />
-<Route
-  path="/payment"
-  element={<Payment />}
-/>
+
 <Route
 path="/gallery"
 element={<Gallery />}
 />
+<Route path="/admin" element={<AdminLogin />} />
 
+<Route
+  path="/admin/dashboard"
+  element={<AdminDashboard />}
+/>
 <Route
 path="/contact"
 element={<Contact />}

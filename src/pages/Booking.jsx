@@ -169,25 +169,21 @@ const [phone, setPhone] =
 const data = await response.json();
 
 if (data.success) {
-  navigate("/payment", {
-    state: {
-      booking: data.booking,   // <-- this is the MongoDB booking document
-
-      customerName,
-      email,
-      phone,
-
-      rooms: selectedRooms,
-
-      checkIn,
-      checkOut,
-
-      days,
-      subtotal,
-      gst,
-      total,
-    },
-  });
+ navigate("/payment", {
+  state: {
+    booking: data.booking,   // <-- This is missing
+    customerName,
+    email,
+    phone,
+    rooms: selectedRooms,
+    checkIn,
+    checkOut,
+    days,
+    subtotal,
+    gst,
+    total,
+  },
+});
 }
     else {
       alert("Booking Failed");

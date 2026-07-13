@@ -6,14 +6,47 @@ export default function Admin() {
 
   const [payments, setPayments] = useState([]);
 
-  useEffect(() => {
-    fetch("https://hotel-asmati-backend.onrender.com/api/payments")
+  const loadPayments = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/payments`)
       .then(res => res.json())
       .then(data => {
         setPayments(data);
       })
-      .catch(err => console.log(err));
+      .catch(console.error);
+  };
+
+  useEffect(() => {
+    loadPayments();
   }, []);
+
+  const updateStatus = async (id, status) => {
+
+    try {
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/payments/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        loadPayments();
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Server Error");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -51,17 +84,43 @@ export default function Admin() {
 
               <p>Transaction ID : {payment.transactionId}</p>
 
-              <p>Status : {payment.status}</p>
+              <p className="mt-3">
+                Status :
+                <span className="font-bold text-yellow-400 ml-2">
+                  {payment.status}
+                </span>
+              </p>
 
-              {payment.screenshot && (
+              <div className="flex gap-4 mt-6">
 
-                <img
-                  src={`https://hotel-asmati-backend.onrender.com/uploads/${payment.screenshot}`}
-                  alt="Payment"
-                  className="w-64 mt-5 rounded-xl"
-                />
+                <button
+                  onClick={() =>
+                    updateStatus(payment._id, "Pending")
+                  }
+                  className="bg-yellow-500 text-black px-5 py-2 rounded-lg"
+                >
+                  Pending
+                </button>
 
-              )}
+                <button
+                  onClick={() =>
+                    updateStatus(payment._id, "Confirmed")
+                  }
+                  className="bg-green-600 px-5 py-2 rounded-lg"
+                >
+                  Confirm
+                </button>
+
+                <button
+                  onClick={() =>
+                    updateStatus(payment._id, "Cancelled")
+                  }
+                  className="bg-red-600 px-5 py-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+
+              </div>
 
             </div>
 

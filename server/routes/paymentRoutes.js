@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const Payment = require("../models/Payment");
-console.log("BODY RECEIVED:", req.body);
-// =======================
+const Booking = require("../models/Booking");
+
+// =====================================
 // Get All Payments
-// =======================
+// =====================================
 
 router.get("/", async (req, res) => {
   try {
@@ -24,9 +25,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-// =======================
+// =====================================
 // Save Payment
-// =======================
+// =====================================
 
 router.post("/", async (req, res) => {
   try {
@@ -40,20 +41,14 @@ router.post("/", async (req, res) => {
       amount: req.body.amount,
       transactionId: req.body.transactionId,
       paymentMethod: req.body.paymentMethod,
-      status: "Pending Verification",
+      status: "Pending",
     };
 
-    // Add bookingId only if it exists
-    if (
-      req.body.bookingId &&
-      req.body.bookingId !== ""
-    ) {
+    if (req.body.bookingId && req.body.bookingId !== "") {
       paymentData.bookingId = req.body.bookingId;
     }
 
-    const payment = new Payment(paymentData);
-
-    await payment.save();
+    const payment = await Payment.create(paymentData);
 
     res.status(201).json({
       success: true,
@@ -61,7 +56,73 @@ router.post("/", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("======= PAYMENT ERROR =======");
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// =====================================
+// Update Payment Status
+// =====================================
+
+// =====================================
+// Update Payment Status
+// =====================================
+
+router.put("/:id", async (req, res) => {
+  try {
+    const payment = await Payment.findById(req.params.id);
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found",
+      });
+    }
+
+    // Update payment status
+    payment.status = req.body.status;
+
+    await payment.save();
+
+    // Update related booking
+    if (payment.bookingId) {
+      let paymentStatus = "Pending";
+      let bookingStatus = "Pending";
+
+      if (req.body.status === "Verified") {
+        paymentStatus = "Verified";
+        bookingStatus = "Confirmed";
+      }
+
+      if (req.body.status === "Rejected") {
+        paymentStatus = "Rejected";
+        bookingStatus = "Cancelled";
+      }
+
+      await Booking.findByIdAndUpdate(
+        payment.bookingId,
+        {
+          paymentStatus,
+          bookingStatus,
+        },
+        {
+          new: true,
+        }
+      );
+    }
+
+    res.json({
+      success: true,
+      message: "Payment Updated",
+      payment,
+    });
+
+  } catch (error) {
     console.error(error);
 
     res.status(500).json({

@@ -31,13 +31,22 @@ const bookingSchema = new mongoose.Schema(
 
     totalAmount: Number,
 
+    // Payment Verification Status
     paymentStatus: {
       type: String,
+      enum: ["Pending", "Verified", "Rejected"],
       default: "Pending",
     },
 
+    // Booking Status
     bookingStatus: {
       type: String,
+      enum: [
+        "Pending",
+        "Confirmed",
+        "Cancelled",
+        "Completed",
+      ],
       default: "Pending",
     },
   },
