@@ -65,6 +65,6 @@ const createAdmin = async () => {
   }
 
 };
-
-
 createAdmin();
+
+

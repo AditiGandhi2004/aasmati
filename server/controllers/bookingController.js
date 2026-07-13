@@ -67,7 +67,35 @@ const getBookings = async (req, res) => {
 
   }
 };
+// ============================
+// Get Booking History by Email
+// ============================
 
+const getBookingHistory = async (req, res) => {
+  try {
+
+    const bookings = await Booking.find({
+      email: req.params.email,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.json({
+      success: true,
+      bookings,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
 // ============================
 // Update Booking Status
 // ============================
@@ -117,5 +145,6 @@ const updateBookingStatus = async (req, res) => {
 module.exports = {
   createBooking,
   getBookings,
+  getBookingHistory,
   updateBookingStatus,
 };
