@@ -15,6 +15,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminPayments from "./pages/AdminPayments";
 import AdminBookings from "./pages/AdminBookings";
+import Admin from "./pages/Admin";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,10 @@ function App() {
   path="/admin/payments"
   element={<AdminPayments />}
 />
+<Route 
+          path="/admin" 
+          element={<Admin />} 
+        />
 <Route
   path="/admin/bookings"
   element={<AdminBookings />}
