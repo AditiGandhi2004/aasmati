@@ -21,13 +21,13 @@ export default function AdminBookings() {
   const updateStatus = async (id, status) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/bookings/${id}/status`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify({ bookingStatus:status }),
         }
       );
 
@@ -102,7 +102,7 @@ export default function AdminBookings() {
                   <td className="p-4">
 
                     <select
-                      value={booking.status || "Pending"}
+                      value={booking.bookingStatus || "Pending"}
                       onChange={(e) =>
                         updateStatus(
                           booking._id,
@@ -111,9 +111,9 @@ export default function AdminBookings() {
                       }
                       className={`px-4 py-2 rounded-lg font-semibold border outline-none
                       ${
-                        booking.status === "Confirmed"
+                        booking.bookingStatus === "Confirmed"
                           ? "bg-green-600 text-white"
-                          : booking.status === "Cancelled"
+                          : booking.bookingStatus === "Cancelled"
                           ? "bg-red-600 text-white"
                           : "bg-yellow-500 text-black"
                       }`}
