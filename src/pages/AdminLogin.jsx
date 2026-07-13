@@ -4,19 +4,54 @@ import { useNavigate } from "react-router-dom";
 export default function AdminLogin() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (
-      username === "admin" &&
-      password === "admin123"
-    ) {
-      localStorage.setItem("admin", "true");
-      navigate("/admin/dashboard");
-    } else {
-      alert("Invalid Username or Password");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
     }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Invalid Username or Password");
+        setLoading(false);
+        return;
+      }
+
+      // Save JWT token
+      localStorage.setItem("adminToken", data.token);
+
+      alert("Login Successful");
+
+      navigate("/admin/dashboard");
+
+    } catch (error) {
+      console.error(error);
+      alert("Server Error");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -29,10 +64,10 @@ export default function AdminLogin() {
         </h1>
 
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e)=>setUsername(e.target.value)}
+          type="email"
+          placeholder="Admin Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-4 rounded-xl bg-black border border-yellow-500 text-white mb-5"
         />
 
@@ -40,15 +75,16 @@ export default function AdminLogin() {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full p-4 rounded-xl bg-black border border-yellow-500 text-white mb-8"
         />
 
         <button
           onClick={handleLogin}
-          className="w-full bg-yellow-500 text-black py-4 rounded-xl font-bold text-lg"
+          disabled={loading}
+          className="w-full bg-yellow-500 text-black py-4 rounded-xl font-bold text-lg hover:bg-yellow-400"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
       </div>
