@@ -27,13 +27,16 @@ const createBooking = async (req, res) => {
       message: "Booking Created Successfully",
       booking,
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
@@ -43,6 +46,7 @@ const createBooking = async (req, res) => {
 
 const getBookings = async (req, res) => {
   try {
+
     const bookings = await Booking.find().sort({
       createdAt: -1,
     });
@@ -51,13 +55,16 @@ const getBookings = async (req, res) => {
       success: true,
       bookings,
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
@@ -67,28 +74,43 @@ const getBookings = async (req, res) => {
 
 const updateBookingStatus = async (req, res) => {
   try {
-    const booking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      {
-        bookingStatus: req.body.bookingStatus,
-        paymentStatus: req.body.paymentStatus,
-      },
-      {
-        new: true,
-      }
-    );
+
+    const { bookingStatus, paymentStatus } = req.body;
+
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    if (bookingStatus) {
+      booking.bookingStatus = bookingStatus;
+    }
+
+    if (paymentStatus) {
+      booking.paymentStatus = paymentStatus;
+    }
+
+    await booking.save();
 
     res.json({
       success: true,
+      message: "Booking updated successfully",
       booking,
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
