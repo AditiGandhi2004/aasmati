@@ -34,11 +34,15 @@ export default function Navbar() {
       name: "Home",
       path: "/",
     },
+
     {
       name: "Stays",
       path: "/stays",
     },
-    
+     {
+    name: "Booking History",
+    path: "/history",
+  },
     {
       name: "Help",
       path: "/help",

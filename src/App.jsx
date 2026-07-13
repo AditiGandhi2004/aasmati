@@ -16,7 +16,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminPayments from "./pages/AdminPayments";
 import AdminBookings from "./pages/AdminBookings";
-
+import BookingHistory from "./pages/BookingHistory";
 
 function App() {
   return (
@@ -33,7 +33,10 @@ function App() {
         <Route path="/signin" element={<Login />} />
 
         <Route path="/booking" element={<Booking />} />
-
+<Route
+  path="/history"
+  element={<BookingHistory />}
+/>
         <Route path="/summary" element={<BookingSummary />} />
 
         <Route path="/payment" element={<Payment />} />
