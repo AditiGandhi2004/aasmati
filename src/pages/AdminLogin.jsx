@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 export default function AdminLogin() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      alert("Please enter email and password");
+    if (!username || !password) {
+      alert("Please enter username and password");
       return;
     }
 
@@ -25,7 +25,7 @@ export default function AdminLogin() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email,
+            username,
             password,
           }),
         }
@@ -64,10 +64,10 @@ export default function AdminLogin() {
         </h1>
 
         <input
-          type="email"
-          placeholder="Admin Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="test"
+          placeholder="Username"
+          value={username}
+          onChange={(e) =>setUsername(e.target.value)}
           className="w-full p-4 rounded-xl bg-black border border-yellow-500 text-white mb-5"
         />
 
