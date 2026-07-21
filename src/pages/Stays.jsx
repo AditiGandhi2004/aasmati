@@ -25,7 +25,7 @@ export default function Stays() {
     {
       title:
         "Royal Suite Room",
-      image: "/rooms/suite.jpg",
+      image: "/rooms/stays3.jpg",
       desc:
         "A luxurious royal experience.",
     },

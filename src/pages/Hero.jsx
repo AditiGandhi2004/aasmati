@@ -330,7 +330,7 @@ export default function Hero() {
             <div className="flex justify-between items-center">
 
               <span className="text-white">
-                Lawn Area
+               Mini Lawn Area
               </span>
 
               <span className="bg-green-500 px-3 py-1 rounded-full text-sm font-semibold">

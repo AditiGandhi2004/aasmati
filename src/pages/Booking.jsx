@@ -56,7 +56,7 @@ const [phone, setPhone] =
       quantity: 0,
     },
     {
-      name: "Lawn Area",
+      name: "Mini Lawn Area",
       price: 11000,
       desc:
         "Outdoor celebrations",
@@ -233,9 +233,11 @@ if (data.success) {
                 </p>
 
                 <p className="text-yellow-400 text-2xl mt-4 font-bold">
-                  ₹{room.price}
-                  /night
-                </p>
+  ₹{room.price}
+  {["Banquet Hall", "Sun Hall", "Mini Lawn Area"].includes(room.name)
+    ? "/day"
+    : "/night"}
+</p>
 
                 <div className="flex items-center justify-center gap-5 mt-6">
 
